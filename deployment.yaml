@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-demo
+  namespace: tmtd
+
+spec:
+
+  replicas: 2
+
+  strategy:
+    type: RollingUpdate
+
+  selector:
+    matchLabels:
+      app: nginx-demo
+
+  template:
+
+    metadata:
+      labels:
+        app: nginx-demo
+
+    spec:
+
+      containers:
+
+      - name: nginx
+
+        image: 192.168.1.133/tmtd/nginx:v1
+
+        imagePullPolicy: Always
+
+        ports:
+
+        - containerPort: 80
