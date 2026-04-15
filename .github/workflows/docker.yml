@@ -13,19 +13,19 @@ jobs:
 
     steps:
 
-    - name: checkout
+    - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: docker login harbor
+    - name: Docker login Harbor
       run: |
-        docker login 192.168.1.133 \
-        -u ${{ secrets.HARBOR_USER }} \
-        -p ${{ secrets.HARBOR_PASS }}
+        echo "${{ secrets.HARBOR_PASS }}" | docker login http://192.168.1.133 \
+        -u "${{ secrets.HARBOR_USER }}" \
+        --password-stdin
 
-    - name: build image
+    - name: Build image
       run: |
         docker build -t 192.168.1.133/tmtd/nginx:v1 .
 
-    - name: push image
+    - name: Push image
       run: |
         docker push 192.168.1.133/tmtd/nginx:v1
