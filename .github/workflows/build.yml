@@ -18,17 +18,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-#    - name: Docker Login
-#      run: |
-#        echo "${{ secrets.HARBOR_PASS }}" | docker login 192.168.1.133 -u "${{ secrets.HARBOR_USER }}" --password-stdin
+    - name: Docker Login
+      run: |
+        echo "${{ secrets.HARBOR_PASS }}" | docker login 192.168.1.133 -u "${{ secrets.HARBOR_USER }}" --password-stdin
 
-  #  - name: Build Image
-  #    run: |
-   #     docker build -t 192.168.1.133/tmtd/tmtd-test:${{ github.run_number }} .
+    - name: Build Image
+      run: |
+        docker build -t 192.168.1.133/tmtd/tmtd-test:${{ github.run_number }} .
 
-   # - name: Push Image
-   #   run: |
-  #      docker push 192.168.1.133/tmtd/tmtd-test:${{ github.run_number }}
+    - name: Push Image
+      run: |
+        docker push 192.168.1.133/tmtd/tmtd-test:${{ github.run_number }}
 
     - name: Clone GitOps repo
       run: |
