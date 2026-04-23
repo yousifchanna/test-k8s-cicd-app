@@ -32,7 +32,7 @@ jobs:
 
     - name: Clone GitOps repo
       run: |
-        git clone https://github.com/YOUR_USERNAME/tmtd-gitops.git
+        git clone https://${{ secrets.GIT_TOKEN }}@github.com/yousifchanna/tmtd-gitops.git
 
     - name: Update YAML
       run: |
