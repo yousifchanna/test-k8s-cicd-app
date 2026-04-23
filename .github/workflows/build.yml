@@ -1,0 +1,49 @@
+name: CI-CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: 192.168.1.133
+  IMAGE_NAME: tmtd-test
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Docker Login
+      run: |
+        docker login 192.168.1.133 -u ${{ secrets.HARBOR_USER }} -p ${{ secrets.HARBOR_PASS }}
+
+    - name: Build Image
+      run: |
+        docker build -t 192.168.1.133/tmtd/tmtd-test:${{ github.run_number }} .
+
+    - name: Push Image
+      run: |
+        docker push 192.168.1.133/tmtd/tmtd-test:${{ github.run_number }}
+
+    - name: Clone GitOps repo
+      run: |
+        git clone https://github.com/YOUR_USERNAME/tmtd-gitops.git
+
+    - name: Update YAML
+      run: |
+        cd tmtd-gitops
+        sed -i "s|image:.*|image: 192.168.1.133/tmtd/tmtd-test:${{ github.run_number }}|g" deployment.yaml
+
+    - name: Commit & Push
+      run: |
+        cd tmtd-gitops
+        git config user.name "actions"
+        git config user.email "actions@github.com"
+        git add .
+        git commit -m "update image"
+        git push https://${{ secrets.GIT_TOKEN }}@github.com/YOUR_USERNAME/tmtd-gitops.git
