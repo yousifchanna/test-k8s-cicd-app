@@ -20,7 +20,7 @@ jobs:
 
     - name: Docker Login
       run: |
-        echo "${{ secrets.HARBOR_PASS }}" | docker login 192.168.1.133 -u "${{ secrets.HARBOR_USER }}" --password-stdin
+        echo "${{ secrets.HARBOR_PASS }}" | docker login http://192.168.1.133 -u "${{ secrets.HARBOR_USER }}" --password-stdin
 
     - name: Build Image
       run: |
